@@ -86,9 +86,11 @@ class EdgeConnect():
         train_loader = DataLoader(
             dataset=self.train_dataset,
             batch_size=self.config.BATCH_SIZE,
-            num_workers=0,
+            num_workers=4,
             drop_last=True,
-            shuffle=True
+            shuffle=True,
+            pin_memory=True
+
         )
 
         epoch = 0
@@ -210,6 +212,7 @@ class EdgeConnect():
                 # sample model at checkpoints
                 if self.config.SAMPLE_INTERVAL and iteration % self.config.SAMPLE_INTERVAL == 0:
                     self.sample()
+
 
                 # evaluate model at checkpoints
                 if self.config.EVAL_INTERVAL and iteration % self.config.EVAL_INTERVAL == 0:

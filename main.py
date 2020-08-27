@@ -43,7 +43,7 @@ def main(mode=None):
 
     # build the model and initialize
     model = EdgeConnect(config)
-    #model.load()
+    model.load()
 
     # model training
     if config.MODE == 1:

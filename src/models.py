@@ -12,6 +12,7 @@ class BaseModel(nn.Module):
         self.name = name
         self.config = config
         self.iteration = 0
+        self.batchsize = self.config.BATCH_SIZE
 
         self.gen_weights_path = os.path.join(config.PATH, name + '_gen.pth')
         self.dis_weights_path = os.path.join(config.PATH, name + '_dis.pth')
@@ -119,8 +120,8 @@ class EdgeModel(BaseModel):
         gen_loss += gen_fm_loss
 
         # attr loss
-        gen_fake_attr = torch.reshape(gen_fake_attr, (1, -1))
-        dis_real_attr = torch.reshape(dis_real_attr, (1, -1))
+        gen_fake_attr = torch.reshape(gen_fake_attr, (self.batchsize, -1))
+        dis_real_attr = torch.reshape(dis_real_attr, (self.batchsize, -1))
         gen_attr_loss = self.bce_loss(gen_fake_attr, attr)
         dis_attr_loss = self.bce_loss(dis_real_attr, attr)
 
@@ -237,8 +238,8 @@ class InpaintingModel(BaseModel):
         gen_loss += gen_style_loss
 
         # attr loss
-        gen_fake_attr = torch.reshape(gen_fake_attr, (1, -1))
-        dis_real_attr = torch.reshape(dis_real_attr, (1, -1))
+        gen_fake_attr = torch.reshape(gen_fake_attr, (self.batchsize, -1))
+        dis_real_attr = torch.reshape(dis_real_attr, (self.batchsize, -1))
         gen_attr_loss = self.bce_loss(gen_fake_attr, attr)
         dis_attr_loss = self.bce_loss(dis_real_attr, attr)
         gen_loss += gen_attr_loss  #weight
